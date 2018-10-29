@@ -7,57 +7,72 @@
 </head>
 <body>
 
+	<?php
+
+	if (isset($_POST['cp']) && isset($_POST['margin'])) {
+		if ($_POST['cp'] < 40) {
+			$shipping = 10;
+		} else  {
+			$shipping = 0;
+		}
+		$cp = $_POST['cp'];
+		$margin = $_POST['margin'];
+		$vat = ($cp + $shipping + $margin / 100 * ($cp + $shipping)) * 0.21;
+		$retail = $cp + $shipping + $margin + $vat;
+	}
+	?>
+
+
 	<div class="container">
-	<form action="index.php" method="post">
-		<div class="col-5">
-			<label><h5>Cost Price</h5></label>
-			<input type="text" name="cp" class="form-control">
-		</div>
+		<h1>Profit Calculator</h1>
 		<br>
-		<div class="col-5">
-			<label><h5>Margin</h5></label>
-			<input type="text" name="margin" class="form-control">
+		<form action="index.php" method="post">
+			<div class="row">
+				<div class="col">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Cost Price</span>
+						</div>
+						<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="cp">
+						<div class="input-group-append">
+							<span class="input-group-text">Eur</span>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="col">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Margin</span>
+						</div>
+						<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="margin">
+						<div class="input-group-append">
+							<span class="input-group-text">%</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<button type="submit" class="btn btn-success form-control">Calculate</button>
+				</div>
+			</div>
 			<br>
-		</div>
-		<div class="col-5">
-			<button class="btn btn-success form-control">Calculate</button>
-		</div>
+			<div class="row">
+				<div class="col">
+					<ul class="list-group">
+						<li class="list-group-item">Cost price: <?= $cp ?> eur.</li>
+						<li class="list-group-item">Shipping: <?= $shipping ?> eur.</li>
+						<li class="list-group-item">Margin: <?= $margin / 100 * ($cp + $shipping) ?> eur.</li>
+						<li class="list-group-item">VAT (21%): <?= $vat ?> eur.</li>
+						<li class="list-group-item">Retail price: <?= $retail ?> eur.</li>
+					</ul>
+				</div>
+			</div>
+
 		</form>
-		<br>
-		<table class="table table-bordered table-dark">
-			<thead>
-				<tr>
-					<th scope="col">Cost Price</th>
-					<th scope="col">Shipping</th>
-					<th scope="col">Margin</th>
-					<th scope="col">VAT</th>
-					<th scope="col">Retail</th>
-					<th scope="col">Coef</th>
-				</tr>
-			</thead>
-			<tbody>
-				
-				<?php
-
-					if (isset($_POST['cp']) && isset($_POST['margin'])) {
-						if ($_POST['cp'] < 40) {
-							$shipping = 10;
-						} else  {
-							$shipping = 0;
-						}
-						$cp = $_POST['cp'];
-						$margin = $_POST['margin'];
-						$vat = $cp + $shipping + $margin;
-						$retail = $cp + $shipping + $margin + $vat;
-					}
 
 
-
-				?>
-
-			</tbody>
-		</table>
-
-</div>
+	</div>
 </body>
 </html>
